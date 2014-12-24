@@ -17,18 +17,20 @@
   <link rel="import" href="bower_components/core-a11y-keys/core-a11y-keys.html">
   <link rel="import" href="bower_components/core-ajax/core-ajax.html">
 
+  <link rel="import" href="elements/elements.html">
+
   <style>
 
 	core-animated-pages {
-	  width: 85%;
-	  height: 85%;
+	  width: 95%;
+	  height: 95%;
 	  -webkit-user-select: none;
-	  overflow: hidden;
+    overflow: hidden;
 	}
 
 	core-animated-pages > * {
 	  border-radius: 5px;
-	  font-size: 50px;
+
 	  background-color: white;
 	}
 
@@ -40,6 +42,7 @@
 	core-menu {
 	  color: #01579b;
 	  margin: 10px 0 0 0;
+    overflow: hidden;
 	}
 
 	core-menu > paper-item {
@@ -65,27 +68,55 @@
   <template is="auto-binding">
     <flatiron-director route="{{route}}" autoHash></flatiron-director>
     <core-a11y-keys target="{{parentElement}}" keys="up down left right space space+shift" on-keys-pressed="{{keyHandler}}"></core-a11y-keys>
+    <core-ajax id="ajax" auto url="{{selectedPage.page.url}}"
+      handleAs="document" on-core-response="{{onResponse}}"></core-ajax>
 
     <core-scaffold id="scaffold">
       <nav navigation>
     		<core-toolbar><span>ITU Student</span></core-toolbar>
-    		<core-menu on-core-select="{{menuItemSelected}}" valueattr="hash" selected="{{route}}"><!-- valueattr tells core-menu to select what attribute -->
+    		<core-menu selectedModel="{{selectedPage}}" on-core-select="{{menuItemSelected}}" valueattr="hash" selected="{{route}}"><!-- valueattr tells core-menu to select what attribute -->
     	    <template repeat="{{page in pages}}">
         	<paper-item icon="label{{route != page.hash ? '-outline' : ''}}" label="{{page.name}}" hash="{{page.hash}}">
-          		<a href="#{{page.hash}}"></a>
+          		<a class="menu-link" href="{{page.url}}" onclick="return false;"></a>
         	</paper-item>
         	</template>
     	  </core-menu>
   	  </nav>
       <core-toolbar tool flex><!-- flex makes the bar span across the top of the main content area -->
-  		  <div flex>Dashboard</div><!-- flex spaces this element and jusifies the icons to the right-side -->
-    		<core-icon-button icon="refresh"></core-icon-button>
-    		<core-icon-button icon="add"></core-icon-button>
+  		  <div flex>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary">Fall 2014</button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+            </ul>
+          </div>
+          <button type="button" class="btn btn-info">
+            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Transcript
+          </button>
+        </div><!-- flex spaces this element and jusifies the icons to the right-side -->
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="left:-129px;">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+          </ul>
+        </div>
   	  </core-toolbar>
       <div layout horizontal center-center fit>
   	  	<core-animated-pages valueattr="hash" selected="{{route}}" transitions="slide-from-right" id="pages">
   		    <template repeat="{{page in pages}}">
-  			    <section hash="{{page.hash}}" layout vertical center-center>
+  			    <section hash="{{page.hash}}" layout vertical top-center>
   			      <div>{{page.name}}</div>
   			    </section>
     			</template>
@@ -97,10 +128,11 @@
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script>
   var template = document.querySelector('template[is="auto-binding"]');
+
   template.pages = [
-    {name: 'Single', hash: 'one'},
-    {name: 'page', hash: 'two'},
-    {name: 'app', hash: 'three'}
+    {name: 'Dashboard', hash: 'one', url: '/views/courses/one.html'},
+    {name: 'UI/UX: User Interfaces & User Experiences', hash: 'two', url: '/views/courses/two.html'},
+    {name: 'Computer Graphic Software Fundamentals', hash: 'three', url: '/views/courses/one.html'}
   ];
 
   template.addEventListener('template-bound', function(e) {
@@ -136,6 +168,13 @@
   		}
   		e.shiftKey ? sender.selectPrevious(true): sender.selectNext(true);
 	};
+  template.onResponse = function(e, detail, sender) {
+    var article = detail.response.querySelector('.container');
+
+    var pages = document.querySelector('#pages');
+    this.injectBoundHTML(article.innerHTML,
+        pages.selectedItem.firstElementChild);
+  };
 </script>
 </body>
 </html>
