@@ -72,7 +72,7 @@
       handleAs="document" on-core-response="{{onResponse}}"></core-ajax>
 
     <core-scaffold id="scaffold">
-      <nav navigation>
+      <nav navigation vertical layout style="height: 100%">
     		<core-toolbar><span>ITU Student</span></core-toolbar>
     		<core-menu selectedModel="{{selectedPage}}" on-core-select="{{menuItemSelected}}" valueattr="hash" selected="{{route}}"><!-- valueattr tells core-menu to select what attribute -->
     	    <template repeat="{{page in pages}}">
@@ -81,35 +81,40 @@
         	</paper-item>
         	</template>
     	  </core-menu>
+        <div flex self-center horizontal layout end style="padding-bottom: 22px;">
+          <button type="button" class="btn btn-info btn-sm" style="margin-right: 4px;">
+            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Transcript
+          </button>
+          <button type="button" class="btn btn-info btn-sm">
+            <span class="glyphicon glyphicon-book" aria-hidden="true"></span> E-Library
+          </button>
+        </div>
   	  </nav>
       <core-toolbar tool flex><!-- flex makes the bar span across the top of the main content area -->
   		  <div flex>
           <div class="btn-group">
-            <button type="button" class="btn btn-primary">Fall 2014</button>
+            <button type="button" class="btn btn-primary">Trimester: Fall 2014</button>
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
               <span class="caret"></span>
               <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Fall 2014</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Summer 2014</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Spring 2014</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Fall 2013</a></li>
             </ul>
           </div>
-          <button type="button" class="btn btn-info">
-            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Transcript
-          </button>
         </div><!-- flex spaces this element and jusifies the icons to the right-side -->
         <div class="dropdown">
           <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="left:-129px;">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Profile</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Payment</a></li>
+            <li role="presentation" class="divider"></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Logout</a></li>
           </ul>
         </div>
   	  </core-toolbar>
@@ -132,7 +137,7 @@
   template.pages = [
     {name: 'Dashboard', hash: 'one', url: '/views/courses/one.html'},
     {name: 'UI/UX: User Interfaces & User Experiences', hash: 'two', url: '/views/courses/two.html'},
-    {name: 'Computer Graphic Software Fundamentals', hash: 'three', url: '/views/courses/one.html'}
+    {name: 'Computer Graphic Software Fundamentals', hash: 'three', url: '/views/courses/three.html'}
   ];
 
   template.addEventListener('template-bound', function(e) {
