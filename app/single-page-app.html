@@ -45,6 +45,11 @@
     overflow: hidden;
 	}
 
+  body /deep/ nav.navbar {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
 	core-menu > paper-item {
 	  transition: all 300ms ease-in-out;
 	}
@@ -73,10 +78,10 @@
 
     <core-scaffold id="scaffold">
       <nav navigation vertical layout style="height: 100%">
-    		<core-toolbar><span>ITU Student</span></core-toolbar>
+    		<core-toolbar><span>ITU Student Dashboard</span></core-toolbar>
     		<core-menu selectedModel="{{selectedPage}}" on-core-select="{{menuItemSelected}}" valueattr="hash" selected="{{route}}"><!-- valueattr tells core-menu to select what attribute -->
     	    <template repeat="{{page in pages}}">
-        	<paper-item icon="label{{route != page.hash ? '-outline' : ''}}" label="{{page.name}}" hash="{{page.hash}}">
+        	<paper-item style="visibility: {{page.visibility}};" icon="label{{route != page.hash ? '-outline' : ''}}" label="{{page.name}}" hash="{{page.hash}}">
           		<a class="menu-link" href="{{page.url}}" onclick="return false;"></a>
         	</paper-item>
         	</template>
@@ -110,7 +115,7 @@
           <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
           </button>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="left:-129px;">
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="left:-120px;">
             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Profile</a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Payment</a></li>
             <li role="presentation" class="divider"></li>
@@ -135,9 +140,10 @@
   var template = document.querySelector('template[is="auto-binding"]');
 
   template.pages = [
-    {name: 'Dashboard', hash: 'one', url: '/views/courses/one.html'},
-    {name: 'UI/UX: User Interfaces & User Experiences', hash: 'two', url: '/views/courses/two.html'},
-    {name: 'Computer Graphic Software Fundamentals', hash: 'three', url: '/views/courses/three.html'}
+{name: 'Home', hash: 'one', url: '/views/courses/one.html', visibility: 'visible'},
+    {name: 'UI/UX: User Interfaces & User Experiences', hash: 'two', url: '/views/courses/two.html', visibility: 'visible'},
+  {name: 'Computer Graphic Software Fundamentals', hash: 'three', url: '/views/courses/three.html', visibility: 'visible'},
+{name: 'one assignment', hash: 'four', url: '/views/courses/assignment.html', visibility: 'hidden'}
   ];
 
   template.addEventListener('template-bound', function(e) {
